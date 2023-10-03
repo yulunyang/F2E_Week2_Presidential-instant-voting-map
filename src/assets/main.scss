@@ -1,0 +1,71 @@
+.proj-container {
+  max-width: 1188px;
+}
+.outer-container {
+  max-width: 1920px;
+}
+// back-ground
+.proj-bg-primary {
+  background-color: #B82A06;
+}
+.proj-bg-secondary {
+  background-color: #3C0C00;
+}
+.proj-bg-light-grey {
+  background-color: #DCDCDC;
+}
+.proj-bg-tertiary {
+  background-color: #FFB3A4;
+}
+.proj-bg-black {
+  background-color: #000000;
+}
+// color
+.proj-text-primary {
+  color: #B82A06;
+}
+.proj-text-secondary {
+  color: #3C0C00;
+}
+.proj-text-light-grey {
+  color: #DCDCDC;
+}
+.proj-text-tertiary {
+  color: #FFB3A4;
+}
+.proj-text-black {
+  color: #000000;
+}
+.proj-text-blue {
+  color: #0061A1;
+}
+.proj-text-green {
+  color: #C7FFA3
+  ;
+}
+
+.button {
+  color: #B82A06;
+  background: #FFFFFF;
+  &:hover {
+    box-shadow: inset 0.3em 0.3em 0 0 #FFB3A4;
+    background: #FFFFFF;
+    color: #B82A06;
+  }
+  &:active {
+    box-shadow: none;
+    background: #3C0C00;
+  }
+  &:focus {
+    color: #B82A06;
+    box-shadow: none;
+    background: #FFFFFF;
+  }
+  +.disabled {
+    color: #FFFFFF;
+    background: #DCDCDC;
+  }
+}
+.translate-middle {
+  transform: translate(-50%,-50%);
+}
