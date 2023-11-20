@@ -1,5 +1,5 @@
 <template>
-  <div id="main" class="m-0 p-0">
+  <div id="app" class="m-0 p-0">
     <HeaderSection />
     <router-view />
   </div>
@@ -17,26 +17,11 @@ export default ({
 </script>
 
 <style lang="scss">
-#main {
-  font-family: 'cubic-11';
-  text-align: center;
-  background: black;
-  max-width: 1920px;
-  margin-left: auto;
-  margin-right: auto;
-  overflow-x: hidden;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  #app {
+    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f5f5f5;
   }
-}
 </style>

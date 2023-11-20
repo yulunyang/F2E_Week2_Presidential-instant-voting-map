@@ -1,71 +1,55 @@
-.proj-container {
-  max-width: 1188px;
-}
-.outer-container {
-  max-width: 1920px;
-}
-// back-ground
-.proj-bg-primary {
-  background-color: #B82A06;
-}
-.proj-bg-secondary {
-  background-color: #3C0C00;
-}
-.proj-bg-light-grey {
-  background-color: #DCDCDC;
-}
-.proj-bg-tertiary {
-  background-color: #FFB3A4;
-}
-.proj-bg-black {
-  background-color: #000000;
-}
-// color
-.proj-text-primary {
-  color: #B82A06;
-}
-.proj-text-secondary {
-  color: #3C0C00;
-}
-.proj-text-light-grey {
-  color: #DCDCDC;
-}
-.proj-text-tertiary {
-  color: #FFB3A4;
-}
-.proj-text-black {
-  color: #000000;
-}
-.proj-text-blue {
-  color: #0061A1;
-}
-.proj-text-green {
-  color: #C7FFA3
-  ;
-}
-
-.button {
-  color: #B82A06;
-  background: #FFFFFF;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+JP&family=Noto+Sans+SC&family=Noto+Sans+TC&display=swap');
+// button
+.refresh-btn {
+  background: #262E49;
   &:hover {
-    box-shadow: inset 0.3em 0.3em 0 0 #FFB3A4;
-    background: #FFFFFF;
-    color: #B82A06;
+    background: #525982;
   }
   &:active {
-    box-shadow: none;
-    background: #3C0C00;
+    background: #525982;
   }
-  &:focus {
-    color: #B82A06;
-    box-shadow: none;
-    background: #FFFFFF;
-  }
-  +.disabled {
-    color: #FFFFFF;
-    background: #DCDCDC;
+  +.disable {
+    background: #CCCCCC;
   }
 }
-.translate-middle {
-  transform: translate(-50%,-50%);
+// color
+.text-gray-01 {
+  color: #BFBFBF;
+}
+
+// bg
+.bg-gray-02 {
+  background-color: #DEE0E4;
+}
+
+.bg-green-01 {
+  background-color: #EDF7F0;
+}
+.bg-green-02 {
+  background-color: #84CB98;
+}
+.bg-purple-01 {
+  background-color: #EDEFF9;
+}
+.bg-purple-02 {
+  background-color: #8894D8;
+}
+.bg-orange-01 {
+  background-color: #DFA175;
+}
+// border-color
+.border-green-01 {
+  border-color: #EDF7F0;
+}
+.border-green-02 {
+  border-color: #84CB98;
+}
+.border-purple-01 {
+  border-color: #EDEFF9;
+}
+.border-purple-02 {
+  border-color: #8894D8;
+}
+.border-orange-01 {
+  border-color: #DFA175;
 }
