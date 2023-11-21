@@ -4,7 +4,7 @@
       <div class="relative w-full md:w-auto md:mr-2 mb-3 md:mb-0">
         <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
           v-model="cityIndex" @change="emitData">
-          <option :value="''">請選擇</option>
+          <option value="">請選擇</option>
           <option v-for="(item,index) in cityListData" :key="index" :value="index">{{ item.name }}</option>
         </select>
         <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
@@ -14,7 +14,7 @@
       <div class="relative w-full md:w-auto md:mr-2">
         <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
           v-model="districtsIndex" @change="emitData">
-          <option :value="''">請選擇</option>
+          <option value="">請選擇</option>
           <option v-for="(item,index) in districtsListData" :key="index" :value="index">{{ item.name }}</option>
         </select>
         <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
