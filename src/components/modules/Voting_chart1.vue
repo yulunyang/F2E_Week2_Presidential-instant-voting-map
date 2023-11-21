@@ -1,101 +1,40 @@
 <template>
-  <div style="width: 400px">
-    <div style="display: flex; justify-content: center">
-      <button type="button" @click="shuffleData">Add data</button>
-      <button type="button" @click="switchLegend">Swicth legends</button>
-    </div>
-    <DoughnutChart v-bind="doughnutChartProps" />
-  </div>
+  <!-- <div class="contain w-full"> -->
+    <div ref="chart1" class="chart2 w-full h-full max-w-full" style="width: 160px; height:160px;"></div>
+  <!-- </div> -->
 </template>
 
-<script lang='ts'>
-import { computed, defineComponent, ref } from "vue";
-// import { shuffle } from "lodash";
-import { DoughnutChart, useDoughnutChart } from "vue-chart-3";
-import { Chart, ChartData, ChartOptions, registerables } from "chart.js";
+<script>
+import { ref, onMounted } from 'vue'
+import usePie from './usePie.js'
+export default {
+  name: 'Chart_1',
+  setup () {
+    const chart1 = ref(null)
 
-Chart.register(...registerables);
-export default defineComponent({
-  name: "App",
-  components: { DoughnutChart },
-  setup() {
-    const dataValues = ref([30, 40, 60, 70, 5]);
-    const dataLabels = ref(["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"]);
-    const toggleLegend = ref(true);
+    onMounted(() => {
+      const { setOption, resize } = usePie(chart1.value)
+      setOption([
+        { value: 163631, name: '無效票數', itemStyle: { color: '#D9D9D9' } },
+        { value: 14300940, name: '有效票數', itemStyle: { color: '#262E49' } },
+      ])
+      window.addEventListener('resize', () => {
+        resize()
+      })
+    })
 
-    const testData = computed<ChartData<"doughnut">>(() => ({
-      labels: dataLabels.value,
-      datasets: [
-        {
-          data: dataValues.value,
-          backgroundColor: [
-            "#77CEFF",
-            "#0079AF",
-            "#123E6B",
-            "#97B0C4",
-            "#A5C8ED",
-          ],
-        },
-      ],
-    }));
-
-    const options = computed<ChartOptions<"doughnut">>(() => ({
-      scales: {
-        myScale: {
-          type: "logarithmic",
-          position: toggleLegend.value ? "left" : "right",
-        },
-      },
-      plugins: {
-        legend: {
-          position: toggleLegend.value ? "top" : "bottom",
-        },
-        title: {
-          display: true,
-          text: "Chart.js Doughnut Chart",
-        },
-      },
-    }));
-
-    const { doughnutChartProps, doughnutChartRef } = useDoughnutChart({
-      chartData: testData,
-      options,
-    });
-
-    let index = ref(20);
-
-    function shuffleData() {
-      // dataValues.value = shuffle(dataValues.value);
-      dataValues.value.push(index.value);
-      dataLabels.value.push("Other" + index.value);
-      console.log(dataValues.value);
-      console.log(doughnutChartRef.value.chartInstance);
-      index.value++;
-    }
-
-    function switchLegend() {
-      toggleLegend.value = !toggleLegend.value;
-    }
-
-    return {
-      shuffleData,
-      switchLegend,
-      testData,
-      options,
-      doughnutChartRef,
-      doughnutChartProps,
-    };
-  },
-});
+    return { chart1 }
+  }
+}
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  .chart2 {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    max-width: 160px;
+    width: 160px;
+    height: 160px;
+  }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <SwipterTip /> -->
     <div v-if="!hasData">
       <div class="bg-gray-02 rounded-md w-full p-4 mb-5">
         <div class="flex items-center mb-2">
@@ -7,7 +8,7 @@
           <h5 class="text-xl font-semibold">小提示</h5>
         </div>
         <p>點擊選擇縣市、區、村里，可查看選舉結果</p>
-        <div class="pt-12 pb-4">
+        <div class="pt-6 md:pt-12 pb-4">
           <img src="@/assets/img/selectTip.png" alt="" class="mx-auto">
         </div>
       </div>
@@ -17,7 +18,7 @@
           <h5 class="text-xl font-semibold">小提示</h5>
         </div>
         <p>點擊地圖查看縣市的選舉結果</p>
-        <div class="pt-16 pb-4">
+        <div class="pt-6 md:pt-16 pb-4">
           <img src="@/assets/img/selectTip2.png" alt="" class="mx-auto">
         </div>
       </div>
@@ -178,9 +179,13 @@
 </template>
 <script>
 import { ref } from 'vue'
+// import SwipterTip from '@/components/modules/swipter_tip.vue'
 export default({
+  components: {
+    // SwipterTip
+  },
   setup () {
-    const hasData = ref(true)
+    const hasData = ref(false)
 
     return {
       hasData

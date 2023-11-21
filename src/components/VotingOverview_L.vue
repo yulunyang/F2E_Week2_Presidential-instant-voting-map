@@ -7,12 +7,12 @@
         <img src="@/assets/img/chevron-down.png" alt="" class="md:ml-2" v-if="isShow">
       </div>
     </div>
-    <div v-if="isShow" class="mt-6 lg:hidden">
+    <div class="mt-6 hidden lg:block">
       <div class="flex flex-wrap items-center mb-3">
-        <div class="w-2/5 lg:1/2">
-          <img src="@/assets/img/dount1.png" alt="" class="">
+        <div class="w-2/5 lg:w-3/5">
+          <Voting_chart1 />
         </div>
-        <div class="flex-1 lg:1/2 lg:px-3">
+        <div class="flex-1 lg:w-2/5 lg:px-3">
           <p class="text-xl font-semibold">74.9%</p>
           <p>投票率</p>
         </div>
@@ -23,8 +23,9 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center">
-        <div class="w-2/5 lg:1/2">
-          <img src="@/assets/img/dount2.png" alt="" class="">
+        <div class="w-2/5 lg:w-3/5">
+          <Voting_chart2 />
+          <!-- <img src="@/assets/img/dount2.png" alt="" class=""> -->
         </div>
         <div class="w-3/5 lg:w-full lg:py-3">
           <div class="flex items-start pt-3 pb-2">
@@ -75,12 +76,12 @@
         </div>
       </div>
     </div>
-    <div class="mt-6 hidden lg:block">
+    <div class="mt-6 lg:hidden" v-if="isShow">
       <div class="flex flex-wrap items-center mb-3">
-        <div class="w-2/5 lg:1/2">
-          <img src="@/assets/img/dount1.png" alt="" class="">
+        <div class="w-2/5 lg:w-3/5">
+          <Voting_chart1 />
         </div>
-        <div class="flex-1 lg:1/2 lg:px-3">
+        <div class="flex-1 lg:w-2/5 lg:px-3">
           <p class="text-xl font-semibold">74.9%</p>
           <p>投票率</p>
         </div>
@@ -91,8 +92,9 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center">
-        <div class="w-2/5 lg:1/2">
-          <img src="@/assets/img/dount2.png" alt="" class="">
+        <div class="w-2/5 lg:w-3/5">
+          <Voting_chart2 />
+          <!-- <img src="@/assets/img/dount2.png" alt="" class=""> -->
         </div>
         <div class="w-3/5 lg:w-full lg:py-3">
           <div class="flex items-start pt-3 pb-2">
@@ -147,26 +149,19 @@
 </template>
 <script>
 import { ref } from 'vue'
-// import Voting_chart1 from '@/components/modules/Voting_chart1.vue'
+import Voting_chart1 from '@/components/modules/Voting_chart1.vue'
+import Voting_chart2 from '@/components/modules/Voting_chart2.vue'
 export default({
   props: {
-    // isShow: Boolean
   },
   components: {
-    // Voting_chart1
+    Voting_chart2,
+    Voting_chart1
   },
   setup () {
     const isShow = ref(false)
-    // const reative = cars([
-    //     'BMW',
-    //     'Mercedes',
-    //     'Audi',
-    //     'Volvo',
-    //   ])
-
       return {
         isShow
-        // cars
     }
   },
 })

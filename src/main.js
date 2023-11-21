@@ -7,8 +7,9 @@ import '@/assets/main.scss'
 import { gsap, ScrollTrigger, Draggable, MotionPathPlugin, TextPlugin } from "gsap/all";
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/css/swiper.css'
 
-// don't forget to register plugins
 gsap.registerPlugin(gsap, ScrollTrigger, Draggable, MotionPathPlugin, TextPlugin)
 
 export const app = createApp(App)

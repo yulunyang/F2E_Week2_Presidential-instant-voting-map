@@ -1,5 +1,5 @@
 <template>
-  <div class="main container mx-auto py-6 px-2">
+  <div class="main container mx-auto py-3 md:py-6 px-2">
     <div class="side-bar flex mb-5 px-4 md:px-0">
       <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': isPresent, 'text-gray-01': !isPresent }" @click="isPresent = true">第15任 總統副總統大選</a>
       <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a>
