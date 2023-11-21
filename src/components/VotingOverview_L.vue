@@ -2,7 +2,7 @@
   <div class="bg-white rounded-md w-full p-2 px-4 md:p-4">
     <div class="flex">
       <h5 class="text-lg md:text-xl font-semibold">投票概況</h5>
-      <div class="flex-1 flex justify-end md:hidden" @click="isShow = !isShow">
+      <div class="flex-1 flex justify-end lg:hidden" @click="isShow = !isShow">
         <img src="@/assets/img/chevron-right.png" alt="" class="md:ml-2" v-if="!isShow">
         <img src="@/assets/img/chevron-down.png" alt="" class="md:ml-2" v-if="isShow">
       </div>

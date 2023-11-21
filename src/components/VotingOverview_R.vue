@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <SwipterTip /> -->
-    <div v-if="!hasData">
+    <div v-if="!cityData.city && !cityData.district">
       <div class="bg-gray-02 rounded-md w-full p-4 mb-5">
         <div class="flex items-center mb-2">
           <img src="@/assets/img/info.png" alt="" class="mr-2">
@@ -23,8 +22,8 @@
         </div>
       </div>
     </div>
-    <div v-if="hasData">
-      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4 mb-5">
+    <div v-else>
+      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4 mb-5" v-if="cityData.city">
         <div class="flex items-center">
           <h5 class="text-xl font-semibold">臺北市</h5>
         </div>
@@ -45,7 +44,7 @@
         </div>
         <div class="flex items-start pt-3 pb-2">
           <div class="w-10">
-            <p class="bg-purple-02 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">3</p>
+            <p class="bg-purple-02 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">2</p>
           </div>
           <div class="flex-1 border-r-2 border-purple-02">
             <p class="font-semibold">中國國民黨</p>
@@ -60,7 +59,7 @@
         </div>
         <div class="flex items-start pt-3 pb-2">
           <div class="w-10">
-            <p class="bg-orange-01 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">3</p>
+            <p class="bg-orange-01 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">1</p>
           </div>
           <div class="flex-1 border-r-2 border-orange-01">
             <p class="font-semibold">親民黨</p>
@@ -74,7 +73,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4 mb-5">
+      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4 mb-5" v-if="cityData.district">
         <div class="flex items-center">
           <h5 class="text-xl font-semibold">南港區</h5>
         </div>
@@ -95,7 +94,7 @@
         </div>
         <div class="flex items-start pt-3 pb-2">
           <div class="w-10">
-            <p class="bg-purple-02 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">3</p>
+            <p class="bg-purple-02 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">2</p>
           </div>
           <div class="flex-1 border-r-2 border-purple-02">
             <p class="font-semibold">中國國民黨</p>
@@ -110,7 +109,7 @@
         </div>
         <div class="flex items-start pt-3 pb-2">
           <div class="w-10">
-            <p class="bg-orange-01 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">3</p>
+            <p class="bg-orange-01 rounded-full w-7 h-7 flex items-center justify-center text-white m-0">1</p>
           </div>
           <div class="flex-1 border-r-2 border-orange-01">
             <p class="font-semibold">親民黨</p>
@@ -124,7 +123,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-purple-01 border-2 border-purple-02 rounded-md w-full p-4 mb-5">
+      <!-- <div class="bg-purple-01 border-2 border-purple-02 rounded-md w-full p-4 mb-5">
         <div class="flex items-center">
           <h5 class="text-xl font-semibold">仁福里</h5>
         </div>
@@ -173,25 +172,20 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
-import { ref } from 'vue'
-// import SwipterTip from '@/components/modules/swipter_tip.vue'
+// import { ref } from 'vue'
 export default({
   components: {
-    // SwipterTip
+  },
+  props: {
+    cityData: Object
   },
   setup () {
-    const hasData = ref(false)
-
     return {
-      hasData
-      // isLoading,
-      // timer,
-      // setTimeOut
     }
   },
 })

@@ -5,58 +5,57 @@
       <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a>
     </div>
     <!-- search-bar -->
-    <SearchBar />
+    <SearchBar v-on:emitData="emitData" />
     <!-- content -->
     <div class="flex flex-wrap mt-4 md:mt-6 w-full">
-      <div class="w-full lg:w-1/5 mb-4 md:mb-0">
+      <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
         <VotingOverview_L />
       </div>
-      <div class="w-full lg:w-3/5 flex justify-center">
+      <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center">
         <div class="">
+          <!-- <ChartTaiwan /> -->
           <img src="@/assets/img/taiwan.png" alt="" class="">
         </div>
       </div>
-      <div class="w-full lg:w-1/5">
-        <VotingOverview_R />
+      <div class="w-full lg:w-3/12 xl:w-1/5">
+        <VotingOverview_R :cityData="cityData" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { onMounted } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
+// import ChartTaiwan from '@/components/chartTaiwan.vue'
 import SearchBar from '@/components/modules/searchBar.vue'
 export default {
   components: {
     VotingOverview_L,
     VotingOverview_R,
     SearchBar
+    // ChartTaiwan
   },
   setup () {
     const isPresent = ref(true)
-    // const isLoading = ref(true)
-    // const timer = ref(null)
+    const cityData = reactive({
+      city: '',
+      district: ''
+    })
 
     onMounted(() => {
     })
 
-    // const setTimeOut = () => {
-    //   if (isLoading.value) {
-    //     const timeout = setTimeout(() => {
-    //       isLoading.value = false
-    //     }, 2000)
-    //     clearTimeout(timeout.value)
-    //   }
-    // }
-
+    const emitData = (val) => {
+      cityData.city = val.city
+      cityData.district = val.district
+    }
     return {
-      isPresent
-      // isLoading,
-      // timer,
-      // setTimeOut
+      isPresent,
+      emitData,
+      cityData
     }
   }
 }
