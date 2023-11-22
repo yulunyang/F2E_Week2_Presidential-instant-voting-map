@@ -7,8 +7,10 @@ import '@/assets/main.scss'
 import { gsap, ScrollTrigger, Draggable, MotionPathPlugin, TextPlugin } from "gsap/all";
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-// import VueAwesomeSwiper from 'vue-awesome-swiper'
-// import 'swiper/css/swiper.css'
+import $ from 'jquery'
+
+window.jQuery = $
+window.$ = $
 
 gsap.registerPlugin(gsap, ScrollTrigger, Draggable, MotionPathPlugin, TextPlugin)
 

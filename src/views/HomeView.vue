@@ -13,12 +13,14 @@
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center">
         <div class="">
-          <!-- <ChartTaiwan /> -->
+          <!-- <TaiwanMap /> -->
           <img src="@/assets/img/taiwan.png" alt="" class="">
         </div>
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
-        <VotingOverview_R :cityData="cityData" />
+        <VotingOverview_R :cityData="cityData" class="hidden lg:block" />
+        <SwipterCard class="lg:hidden" v-if="!cityData.city && !cityData.district" />
+        <SwipterCardData class="lg:hidden" v-else :cityData="cityData" />
       </div>
     </div>
   </div>
@@ -29,14 +31,18 @@ import { ref, reactive } from 'vue'
 import { onMounted } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
-// import ChartTaiwan from '@/components/chartTaiwan.vue'
+// import TaiwanMap from '@/components/TaiwanMap.vue'
 import SearchBar from '@/components/modules/searchBar.vue'
+import SwipterCard from '@/components/modules/swipterCard.vue'
+import SwipterCardData from '@/components/modules/SwipterCardData.vue'
 export default {
   components: {
     VotingOverview_L,
     VotingOverview_R,
-    SearchBar
-    // ChartTaiwan
+    SearchBar,
+    SwipterCard,
+    SwipterCardData
+    // TaiwanMap
   },
   setup () {
     const isPresent = ref(true)

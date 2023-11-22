@@ -1,6 +1,6 @@
 <template>
   <div class="contain w-full">
-    <div ref="chart1" class="chart1 w-full h-full max-w-full" style="width: 160px; height:160px;"></div>
+    <div ref="chart2" class="chart2 w-full h-full max-w-full" style="width: 160px; height:160px;"></div>
   </div>
 </template>
 
@@ -10,10 +10,10 @@ import usePie from './usePie.js'
 export default {
   name: 'Chart_2',
   setup () {
-    const chart1 = ref(null)
+    const chart2 = ref(null)
 
     onMounted(() => {
-      const { setOption, resize } = usePie(chart1.value)
+      const { setOption, resize } = usePie(chart2.value)
       setOption([
         { value: 8170231, name: '民主進步黨', itemStyle: { color: '#84CB98' } },
         { value: 5522119, name: '中國國民黨', itemStyle: { color: '#8894D8' } },
@@ -24,14 +24,14 @@ export default {
       })
     })
 
-    return { chart1 }
+    return { chart2 }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
-.chart1 {
+.chart2 {
   width: 100%;
   height: 100%;
   background-color: #fff;
