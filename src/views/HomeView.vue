@@ -15,7 +15,7 @@
         <TaiwanMap />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
-        <VotingOverview_R :cityData="cityData"  />
+        <VotingOverview_R :setElectionOverview="setElectionOverview.value"  :setCityTickets="setCityTickets.value" :setNationTickets="setNationTickets.value" />
       </div>
     </div>
   </div>
@@ -49,39 +49,45 @@ export default {
     const selectedThemeId = ref(area_themes[0].theme_items[0].theme_id)
     const selectedCityId = ref(null)
     const selectedAreaId = ref(null)
+    const selectedDeptId = ref(null)
 
     const isPresent = ref(true)
-    const cityData = reactive({
-      city: '',
-      district: ''
-    })
+
+    // const nationCandidatePairs = getCandidatePairs(nationTickets)
+    // const cityCandidatePairs = getCandidatePairs(cityTickets.value?.filter((item) => getLocationCode(item) === selectedCityId.value))
+    // const areaCandidatePairs = getCandidatePairs(areaTickets.value?.filter((item) => getLocationCode(item) === selectedAreaId.value))
+    // const deptCandidatePairs = getCandidatePairs(deptTickets.value?.filter((item) => getLocationCode(item) === selectedDeptId.value))
 
     onMounted(() => {
       getData()
       getData2()
     })
 
+    // const getCandidatePairs = computed(() => {
+    //   return []
+    // })
+
     const emitData = (val) => {
       console.log(val)
-      selectedCityId.value = `${val.city.prv_code}_${val.city.city_code}_${val.city.area_code}_${val.city.dept_code}_${val.city.li_code}`
-      selectedAreaId.value = `${val.district.prv_code}_${val.district.city_code}_${val.district.area_code}_${val.district.dept_code}_${val.district.li_code}`
+      selectedCityId.value = getLocationCode(val.city)
+      selectedAreaId.value = getLocationCode(val.district)
+      selectedDeptId.value = getLocationCode(val.dept)
       getData3()
       getData4()
     }
+
     const resetEmit = () => {
-      selectedCityId.value = ''
-      selectedAreaId.value = ''
+      resetSelectedIds()
     }
 
     const resetSelectedIds = () => {
-      // setSelectedCityId('')
-      // setSelectedAreaId('')
-      // setSelectedDeptId('')
+      selectedCityId.value = ''
+      selectedAreaId.value = ''
+      selectedDeptId.value = ''
     };
 
-    const getLocationCode = () => {
-      // return `${item?.prv_code}_${item?.city_code}_${item?.area_code}_${item?.dept_code}_${item?.li_code}`;
-      return `63_000_00_000_0000`;
+    const getLocationCode = (item) => {
+      return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
     }
 
     const getData = () => {
@@ -181,7 +187,6 @@ export default {
       selectedThemeId,
       isPresent,
       emitData,
-      cityData,
       getData,
       getData2,
       getData3,
@@ -195,8 +200,14 @@ export default {
       resetSelectedIds,
       selectedCityId,
       setSelectedCityId,
+      selectedDeptId,
       getLocationCode,
       resetEmit
+      // nationCandidatePairs,
+      // cityCandidatePairs,
+      // areaCandidatePairs,
+      // deptCandidatePairs,
+      // calculateNationTickets
     }
   }
 }

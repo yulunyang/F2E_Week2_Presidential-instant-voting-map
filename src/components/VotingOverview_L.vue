@@ -145,7 +145,6 @@ export default({
       // }
     })
     const calculateNationTickets = computed(() => {
-      return []
       // const candidateNoList = uniq(nationTickets.map((item) => item.cand_no))
       // return candidateNoList.map((candidateNo) => {
       //   const president = nationTickets.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
@@ -163,6 +162,7 @@ export default({
       //     ticketPercent: president?.ticket_percent || 0,
       //   }
       // })
+      return []
     })
 
     return {

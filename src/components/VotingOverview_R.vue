@@ -1,7 +1,7 @@
 <template>
-  <TipCard v-if="!cityData.city && !cityData.district" />
+  <TipCard v-if="!setCityTickets && !setNationTickets" />
 
-  <swiper v-if="cityData.city || cityData.district"
+  <swiper  v-else
     :direction="'horizontal'"
     :slidesPerView="1.4"
     :spaceBetween="20"
@@ -66,7 +66,7 @@
       </div>
     </swiper-slide>
     <swiper-slide>
-      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4 mb-5">
+      <div class="bg-green-01 border-2 border-green-02 rounded-md w-full p-4">
         <div class="flex items-center">
           <h5 class="text-xl font-semibold">南港區</h5>
         </div>
@@ -182,7 +182,9 @@ export default({
     TipCard
   },
   props: {
-    cityData: Object
+    setElectionOverview: Object,
+    setCityTickets: Object,
+    setNationTickets: Object
   },
   setup () {
     return {
