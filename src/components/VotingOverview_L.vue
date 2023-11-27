@@ -135,6 +135,7 @@ export default({
 
   setup () {
     const isShow = ref(false)
+
     onMounted(() => {
       // let obj = {}
       // for (let item of props.setNationTickets) {

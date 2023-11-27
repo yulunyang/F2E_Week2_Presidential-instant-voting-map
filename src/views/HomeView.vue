@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
 import TaiwanMap from '@/components/TaiwanMap.vue'
@@ -63,9 +63,24 @@ export default {
       getData2()
     })
 
-    // const getCandidatePairs = computed(() => {
-    //   return []
-    // })
+    const getCandidatePairs = computed(() => {
+      const candidateNoList = [...new Set(setNationTickets.value.map((item) => item.cand_no))]
+      return candidateNoList.map((candidateNo) => {
+        const president = setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+        const vicePresident = setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+        return {
+          candidateNo,
+          areaId: getLocationCode(president) || '',
+          areaName: president?.area_name || '',
+          presidentName: president?.cand_name || '',
+          vicePresidentName: vicePresident?.cand_name || '',
+          partyName: president?.party_name || '',
+          partyCode: president?.party_code || 0,
+          ticketNum: president?.ticket_num || 0,
+          ticketPercent: president?.ticket_percent || 0,
+        }
+      })
+    })
 
     const emitData = (val) => {
       console.log(val)
@@ -202,7 +217,8 @@ export default {
       setSelectedCityId,
       selectedDeptId,
       getLocationCode,
-      resetEmit
+      resetEmit,
+      getCandidatePairs
       // nationCandidatePairs,
       // cityCandidatePairs,
       // areaCandidatePairs,
