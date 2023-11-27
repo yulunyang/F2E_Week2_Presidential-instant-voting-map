@@ -52,34 +52,12 @@ export default {
     const selectedDeptId = ref(null)
 
     const isPresent = ref(true)
+
     onMounted(() => {
       getData()
       getData2()
     })
-    // const getCandidatePairs = ((tickets) => {
-    //   const candidateNoList = [...new Set(tickets.value.map((item) => item.cand_no))]
-    //   return candidateNoList.map((candidateNo) => {
-    //     const president = tickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-    //     const vicePresident = tickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-    //     return {
-    //       candidateNo,
-    //       areaId: getLocationCode(president) || '',
-    //       areaName: president?.area_name || '',
-    //       presidentName: president?.cand_name || '',
-    //       vicePresidentName: vicePresident?.cand_name || '',
-    //       partyName: president?.party_name || '',
-    //       partyCode: president?.party_code || 0,
-    //       ticketNum: president?.ticket_num || 0,
-    //       ticketPercent: president?.ticket_percent || 0,
-    //     }
-    //   })
-    // })
 
-    // console.log(getCandidatePairs(setNationTickets))
-    // const nationCandidatePairs = getCandidatePairs(setNationTickets)
-    // const cityCandidatePairs = getCandidatePairs(cityTickets.value?.filter((item) => getLocationCode(item) === selectedCityId.value))
-    // const areaCandidatePairs = getCandidatePairs(areaTickets.value?.filter((item) => getLocationCode(item) === selectedAreaId.value))
-    // const deptCandidatePairs = getCandidatePairs(deptTickets.value?.filter((item) => getLocationCode(item) === selectedDeptId.value))
     const emitData = (val) => {
       console.log(val)
       selectedCityId.value = getLocationCode(val.city)
@@ -97,10 +75,6 @@ export default {
       selectedCityId.value = ''
       selectedAreaId.value = ''
       selectedDeptId.value = ''
-    };
-
-    const getLocationCode = (item) => {
-      return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
     }
 
     const getData = () => {
@@ -193,27 +167,37 @@ export default {
         resetSelectedIds()
       })
     }
-    // console.log(getCandidatePairs(setNationTickets))
-    const getCandidatePairs = (arr) => {
-      const candidateNoList = [...new Set(arr.map((item) => item.cand_no))]
-      return candidateNoList.map((candidateNo) => {
-        const president = arr.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-        const vicePresident = arr.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-        return {
-          candidateNo,
-          areaId: getLocationCode(president) || '',
-          areaName: president?.area_name || '',
-          presidentName: president?.cand_name || '',
-          vicePresidentName: vicePresident?.cand_name || '',
-          partyName: president?.party_name || '',
-          partyCode: president?.party_code || 0,
-          ticketNum: president?.ticket_num || 0,
-          ticketPercent: president?.ticket_percent || 0,
-        }
-      })
-    }
-      // console.log(getCandidatePairs(setNationTickets))
 
+    const getLocationCode = (item) => {
+      return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
+    }
+
+    const getCandidatePairs = (arr) => {
+      if (arr) {
+        let candidateNoList = [...new Set(arr.map((item) => item.cand_no))]
+        return candidateNoList.map((candidateNo) => {
+          const president = arr.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+          const vicePresident = arr.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+          return {
+            candidateNo,
+            areaId: getLocationCode(president) || '',
+            areaName: president?.area_name || '',
+            presidentName: president?.cand_name || '',
+            vicePresidentName: vicePresident?.cand_name || '',
+            partyName: president?.party_name || '',
+            partyCode: president?.party_code || 0,
+            ticketNum: president?.ticket_num || 0,
+            ticketPercent: president?.ticket_percent || 0,
+          }
+        })
+      }
+      return []
+
+    }
+    const nationCandidatePairs = setNationTickets ? getCandidatePairs(setNationTickets.value) : []
+    // const cityCandidatePairs = getCandidatePairs(setCityTickets.value?.filter((item) => getLocationCode(item) === selectedCityId.value))
+    // const areaCandidatePairs = getCandidatePairs(areaTickets.value?.filter((item) => getLocationCode(item) === selectedAreaId.value))
+    // const deptCandidatePairs = getCandidatePairs(deptTickets.value?.filter((item) => getLocationCode(item) === selectedDeptId.value))
     return {
       baseURL,
       area_themes,
@@ -237,7 +221,7 @@ export default {
       getLocationCode,
       resetEmit,
       getCandidatePairs,
-      // nationCandidatePairs,
+      nationCandidatePairs,
       // cityCandidatePairs,
       // areaCandidatePairs,
       // deptCandidatePairs,

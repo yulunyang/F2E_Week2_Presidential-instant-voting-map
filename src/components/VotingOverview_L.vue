@@ -26,7 +26,7 @@
         <div class="w-2/5 lg:w-3/5">
           <Voting_chart2 />
         </div>
-        <div class="w-3/5 lg:w-full lg:py-3" v-if="getCandidatePairs">
+        <div class="w-3/5 lg:w-full lg:py-3" v-if="getCandidatePairs && getCandidatePairs.length > 0">
           <div class="flex items-start pt-3 pb-2" v-for="(item,index) in getCandidatePairs" :key="index">
             <div class="w-10">
               <p class="rounded-full w-7 h-7 flex items-center justify-center text-white m-0"
@@ -119,7 +119,7 @@
   </div>
 </template>
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Voting_chart1 from '@/components/modules/Voting_chart1.vue'
 import Voting_chart2 from '@/components/modules/Voting_chart2.vue'
 export default({
@@ -135,56 +135,26 @@ export default({
 
   setup (props) {
     const isShow = ref(false)
-
-    onMounted(() => {
-      // let obj = {}
-      // for (let item of props.setNationTickets) {
-      //   if (!item.party_name) {
-      //     obj.push(item)
-      //   }
-      //   return obj
-      // }
-    })
-    const getLocationCode = (item) => {
-      return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
-    }
-    const getCandidatePairs = computed(() => {
-
-      const candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
-      return candidateNoList.map((candidateNo) => {
-        const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-        const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-        return {
-          candidateNo,
-          areaId: getLocationCode(president) || '',
-          areaName: president?.area_name || '',
-          presidentName: president?.cand_name || '',
-          vicePresidentName: vicePresident?.cand_name || '',
-          partyName: president?.party_name || '',
-          partyCode: president?.party_code || 0,
-          ticketNum: president?.ticket_num || 0,
-          ticketPercent: president?.ticket_percent || 0,
-        }
+    const getCandidatePairs = computed(()=>{
+      let candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
+        return candidateNoList.map((candidateNo) => {
+          const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+          const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+          return {
+            candidateNo,
+            // areaId: getLocationCode(president) || '',
+            areaName: president?.area_name || '',
+            presidentName: president?.cand_name || '',
+            vicePresidentName: vicePresident?.cand_name || '',
+            partyName: president?.party_name || '',
+            partyCode: president?.party_code || 0,
+            ticketNum: president?.ticket_num || 0,
+            ticketPercent: president?.ticket_percent || 0,
+          }
+        })
       })
+    onMounted(() => {
     })
-    // const calculateNationTickets = computed(() => {
-    //   const candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
-    //   return candidateNoList.map((candidateNo) => {
-    //     const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-    //     const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-    //     return {
-    //       candidateNo,
-    //       areaId: getLocationCode(president) || '',
-    //       areaName: president?.area_name || '',
-    //       presidentName: president?.cand_name || '',
-    //       vicePresidentName: vicePresident?.cand_name || '',
-    //       partyName: president?.party_name || '',
-    //       partyCode: president?.party_code || 0,
-    //       ticketNum: president?.ticket_num || 0,
-    //       ticketPercent: president?.ticket_percent || 0,
-    //     }
-    //   })
-    // })
 
     return {
       isShow,
