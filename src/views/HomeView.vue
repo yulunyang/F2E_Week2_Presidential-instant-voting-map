@@ -193,7 +193,7 @@ export default {
         resetSelectedIds()
       })
     }
-
+    // console.log(getCandidatePairs(setNationTickets))
     const getCandidatePairs = (arr) => {
       const candidateNoList = [...new Set(arr.map((item) => item.cand_no))]
       return candidateNoList.map((candidateNo) => {

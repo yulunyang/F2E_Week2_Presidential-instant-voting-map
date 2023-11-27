@@ -26,21 +26,21 @@
         <div class="w-2/5 lg:w-3/5">
           <Voting_chart2 />
         </div>
-        <div class="w-3/5 lg:w-full lg:py-3">
-          <div class="flex items-start pt-3 pb-2" v-for="(item,index) in setNationTickets.value" :key="index">
+        <div class="w-3/5 lg:w-full lg:py-3" v-if="getCandidatePairs">
+          <div class="flex items-start pt-3 pb-2" v-for="(item,index) in getCandidatePairs" :key="index">
             <div class="w-10">
               <p class="rounded-full w-7 h-7 flex items-center justify-center text-white m-0"
-              :class="{'bg-green-02': item.party_name === '民主進步黨', 'bg-purple-02': item.party_name === '中國國民黨', 'bg-orange-01': item.party_name === '親民黨'}">{{ item.cand_no }}</p>
+              :class="{'bg-green-02': item.partyName === '民主進步黨', 'bg-purple-02': item.partyName === '中國國民黨', 'bg-orange-01': item.partyName === '親民黨'}">{{ item.cand_no }}</p>
             </div>
             <div class="flex-1 border-r-2"
-            :class="{'border-green-02': item.party_name === '民主進步黨', 'border-purple-02': item.party_name === '中國國民黨', 'border-orange-01': item.party_name === '親民黨'}">
-              <p class="font-semibold">{{ item.party_name }}</p>
-              <p class="text-xs">{{ item.cand_name }}</p>
+            :class="{'border-green-02': item.partyName === '民主進步黨', 'border-purple-02': item.partyName === '中國國民黨', 'border-orange-01': item.partyName === '親民黨'}">
+              <p class="font-semibold">{{ item.partyName }}</p>
+              <p class="text-xs">{{ item.presidentName }} | {{ item.vicePresidentName }}</p>
             </div>
             <div class="flex-1 flex justify-center">
               <div>
-                <p class="font-semibold">{{ item.ticket_percent }} %</p>
-                <p class="text-xs">{{ item.ticket_num }} 票</p>
+                <p class="font-semibold">{{ item.ticketPercent }} %</p>
+                <p class="text-xs">{{ item.ticketNum }} 票</p>
               </div>
             </div>
           </div>
@@ -133,7 +133,7 @@ export default({
     Voting_chart1
   },
 
-  setup () {
+  setup (props) {
     const isShow = ref(false)
 
     onMounted(() => {
@@ -145,30 +145,50 @@ export default({
       //   return obj
       // }
     })
-    const calculateNationTickets = computed(() => {
-      // const candidateNoList = uniq(nationTickets.map((item) => item.cand_no))
-      // return candidateNoList.map((candidateNo) => {
-      //   const president = nationTickets.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-      //   const vicePresident = nationTickets.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-      //   return {
-      //     candidateNo,
-      //     areaId: getLocationCode(president) || '',
-      //     areaName: president?.area_name || '',
-      //     presidentName: president?.cand_name || '',
-      //     vicePresidentName: vicePresident?.cand_name || '',
-      //     partyName: president?.party_name || '',
-      //     partyCode: president?.party_code || 0,
-      //     partyColor: (partyColors as TParty[])?.find((item) => item.party_name === president?.party_name)?.color_code || 'b3b3b3',
-      //     ticketNum: president?.ticket_num || 0,
-      //     ticketPercent: president?.ticket_percent || 0,
-      //   }
-      // })
-      return []
+    const getLocationCode = (item) => {
+      return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
+    }
+    const getCandidatePairs = computed(() => {
+
+      const candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
+      return candidateNoList.map((candidateNo) => {
+        const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+        const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+        return {
+          candidateNo,
+          areaId: getLocationCode(president) || '',
+          areaName: president?.area_name || '',
+          presidentName: president?.cand_name || '',
+          vicePresidentName: vicePresident?.cand_name || '',
+          partyName: president?.party_name || '',
+          partyCode: president?.party_code || 0,
+          ticketNum: president?.ticket_num || 0,
+          ticketPercent: president?.ticket_percent || 0,
+        }
+      })
     })
+    // const calculateNationTickets = computed(() => {
+    //   const candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
+    //   return candidateNoList.map((candidateNo) => {
+    //     const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+    //     const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+    //     return {
+    //       candidateNo,
+    //       areaId: getLocationCode(president) || '',
+    //       areaName: president?.area_name || '',
+    //       presidentName: president?.cand_name || '',
+    //       vicePresidentName: vicePresident?.cand_name || '',
+    //       partyName: president?.party_name || '',
+    //       partyCode: president?.party_code || 0,
+    //       ticketNum: president?.ticket_num || 0,
+    //       ticketPercent: president?.ticket_percent || 0,
+    //     }
+    //   })
+    // })
 
     return {
       isShow,
-      calculateNationTickets
+      getCandidatePairs
     }
   },
 })
