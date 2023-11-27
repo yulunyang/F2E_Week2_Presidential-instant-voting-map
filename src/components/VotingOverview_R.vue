@@ -187,6 +187,9 @@ export default({
     setNationTickets: Object
   },
   setup () {
+    // const cityCandidatePairs = getCandidatePairs(setCityTickets.value?.filter((item) => getLocationCode(item) === selectedCityId.value))
+    // const areaCandidatePairs = getCandidatePairs(areaTickets.value?.filter((item) => getLocationCode(item) === selectedAreaId.value))
+    // const deptCandidatePairs = getCandidatePairs(deptTickets.value?.filter((item) => getLocationCode(item) === selectedDeptId.value))
     // const getCandidatePairs = computed(()=>{
     //   let candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
     //     return candidateNoList.map((candidateNo) => {
@@ -206,6 +209,9 @@ export default({
     //     })
     //   })
     return {
+      // cityCandidatePairs,
+      // areaCandidatePairs,
+      // deptCandidatePairs,
     }
   },
 })
