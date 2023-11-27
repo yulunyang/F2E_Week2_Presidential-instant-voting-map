@@ -9,14 +9,18 @@ import { ref, onMounted } from 'vue'
 import usePie from './usePie.js'
 export default {
   name: 'Chart_1',
-  setup () {
+  props: {
+    invalid_ticket: Number,
+    valid_ticket: Number
+  },
+  setup (props) {
     const chart1 = ref(null)
 
     onMounted(() => {
       const { setOption, resize } = usePie(chart1.value)
       setOption([
-        { value: 163631, name: '無效票數', itemStyle: { color: '#D9D9D9' } },
-        { value: 14300940, name: '有效票數', itemStyle: { color: '#262E49' } },
+        { value: props.invalid_ticket, name: '無效票數', itemStyle: { color: '#D9D9D9' } },
+        { value: props.valid_ticket, name: '有效票數', itemStyle: { color: '#262E49' } },
       ])
       window.addEventListener('resize', () => {
         resize()

@@ -9,7 +9,7 @@
     <!-- content -->
     <div class="flex flex-wrap mt-4 md:mt-6 w-full">
       <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
-        <VotingOverview_L />
+        <VotingOverview_L :setElectionOverview="setElectionOverview" :setNationTickets="setNationTickets" :setCityTickets="setCityTickets" />
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center px-4 lg:px-20 xl:px-36">
         <TaiwanMap />
@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
-import { onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
 import TaiwanMap from '@/components/TaiwanMap.vue'
@@ -45,6 +44,8 @@ export default {
     const setDepts = reactive({})
     const setSelectedCityId = reactive({})
     const setElectionOverview = reactive({})
+    const setCityTickets = reactive({})
+    const setNationTickets = reactive({})
     const selectedThemeId = ref(area_themes[0].theme_items[0].theme_id)
     const selectedCityId = ref(null)
     const selectedAreaId = ref(null)
@@ -77,8 +78,7 @@ export default {
       // setSelectedAreaId('')
       // setSelectedDeptId('')
     };
-    // https://db.cec.gov.tw/static/elections/data/areas/ELC/P0/00/1f7d9f4f6bfe06fdaf4db7df2ed4d60c/C/00_000_00_000_0000.json
-    // https://db.cec.gov.tw/static/elections/data/tickets/ELC/P0/00/1f7d9f4f6bfe06fdaf4db7df2ed4d60c/D/65_000_00_000_0000.json
+
     const getLocationCode = () => {
       // return `${item?.prv_code}_${item?.city_code}_${item?.area_code}_${item?.dept_code}_${item?.li_code}`;
       return `63_000_00_000_0000`;
@@ -97,7 +97,6 @@ export default {
       // 選舉概況表
       axios.get(`${baseURL.value}/profiles/ELC/P0/00/${selectedThemeId.value}/N/00_000_00_000_0000.json`)
       .then(response =>{
-        console.log(response)
         setElectionOverview.value = response.data['00_000_00_000_0000'][0]
       }).catch(err => {
         console.log(err)
@@ -107,20 +106,19 @@ export default {
 
     const getData2 = () => {
       // 年度，全國
+      if (!selectedThemeId.value) return
+
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/N/00_000_00_000_0000.json`)
       .then(response =>{
-        console.log(response.data)
-        // setCities.value = response.data['00_000_00_000_0000']
+        setNationTickets.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
       });
 
-      // 選舉概況表
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
-        console.log(response.data)
-        // setElectionOverview.value = response.data['00_000_00_000_0000'][0]
+        setCityTickets.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -160,27 +158,23 @@ export default {
       // 里、村
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
       .then(response =>{
-        console.log('里、村')
         console.log(response.data)
         setDepts.value = response.data[selectedAreaId.value]
-        // const updatedDept = res.data[selectedAreaId.value]
-        // const defaultDept = updatedDept?.[0]
-        // setDepts(updatedDept)
-        // setSelectedDeptId(getLocationCode(defaultDept));
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
       })
 
-      // axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
-      // .then(response =>{
-      //   console.log(response.data)
-      //   // setDeptTickets(res.data[selectedAreaId])
-      // }).catch(err => {
-      //   console.log(err)
-      //   resetSelectedIds()
-      // })
+      axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
+      .then(response =>{
+        console.log(response.data)
+        // setDeptTickets(res.data[selectedAreaId])
+      }).catch(err => {
+        console.log(err)
+        resetSelectedIds()
+      })
     }
+
     return {
       baseURL,
       area_themes,
@@ -195,7 +189,9 @@ export default {
       setCities,
       setAreas,
       setDepts,
+      setCityTickets,
       setElectionOverview,
+      setNationTickets,
       resetSelectedIds,
       selectedCityId,
       setSelectedCityId,
