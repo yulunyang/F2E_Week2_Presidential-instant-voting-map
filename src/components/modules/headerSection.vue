@@ -12,7 +12,7 @@ export default({
 </script>
 
 <style lang="scss" scoped>
-header {
-  background: #262E49;
-}
+  header {
+    background: #262E49;
+  }
 </style>

@@ -11,13 +11,11 @@
       <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
         <VotingOverview_L />
       </div>
-      <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center">
+      <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center px-4 lg:px-20 xl:px-36">
         <TaiwanMap />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
-        <VotingOverview_R :cityData="cityData" class="hidden lg:block" />
-        <SwipterCard class="lg:hidden" v-if="!cityData.city && !cityData.district" />
-        <SwipterCardData class="lg:hidden" v-else :cityData="cityData" />
+        <VotingOverview_R :cityData="cityData" />
       </div>
     </div>
   </div>
@@ -30,16 +28,13 @@ import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
 import TaiwanMap from '@/components/TaiwanMap.vue'
 import SearchBar from '@/components/modules/searchBar.vue'
-import SwipterCard from '@/components/modules/swipterCard.vue'
-import SwipterCardData from '@/components/modules/SwipterCardData.vue'
+import axios from 'axios'
 export default {
   components: {
     VotingOverview_L,
     VotingOverview_R,
     SearchBar,
-    SwipterCard,
-    SwipterCardData,
-    TaiwanMap
+    TaiwanMap,
   },
   setup () {
     const isPresent = ref(true)
@@ -49,16 +44,25 @@ export default {
     })
 
     onMounted(() => {
+      // getData()
     })
 
     const emitData = (val) => {
       cityData.city = val.city
       cityData.district = val.district
     }
+
+    const getData = () => {
+      axios.get('/https://db.cec.gov.tw/static/elections/data/areas/ELC/P0/00/1f7d9f4f6bfe06fdaf4db7df2ed4d60c/C/00_000_00_000_0000.json')
+      .then((response) => {
+        console.log(response)
+      })
+    }
     return {
       isPresent,
       emitData,
-      cityData
+      cityData,
+      getData
     }
   }
 }
@@ -68,6 +72,9 @@ export default {
   .main {
     min-height: calc(100vh - 68px);
     margin-top: 68px;
+    @media screen and (min-width: 1024px) {
+      margin-top: 56px;
+    }
     .active-bar {
       color: #000000;
       font-weight: 600;
