@@ -53,7 +53,7 @@
         <TaiwanMap :cityTicketsMap="cityTicketsMap" />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
-        <VotingOverview_R :cityTickets="cityTickets" :areaTickets="areaTickets" :deptTickets="deptTickets"/>
+        <VotingOverview_R :cityTickets="cityTickets" :areaTickets="areaTickets" :deptTickets="deptTickets" :selectedCityId="selectedCityId" :selectedAreaId="selectedAreaId" :selectedDeptId="selectedDeptId" />
       </div>
     </div>
   </div>
@@ -98,8 +98,8 @@ export default {
     onMounted(() => {
       getData()
       getData2()
-      // getData3()
-      // getData4()
+      getData3()
+      getData4()
     })
 
     const resetEmit = () => {
@@ -171,7 +171,9 @@ export default {
         let updatedAreas = response.data[selectedCityId.value]
         let defaultArea = updatedAreas?.[0]
 
-        selectedAreaId.value = getLocationCode(defaultArea)
+        if (!selectedAreaId.value) {
+          selectedAreaId.value = getLocationCode(defaultArea)
+        }
 
         areas.value = updatedAreas
       }).catch(() => {
@@ -196,7 +198,9 @@ export default {
       let updatedDept = response.data[selectedAreaId.value]
       let defaultDept = updatedDept?.[0]
 
-      selectedDeptId.value = getLocationCode(defaultDept)
+      if (!selectedDeptId.value) {
+        selectedDeptId.value = getLocationCode(defaultDept)
+      }
 
       depts.value = updatedDept
       }).catch(err => {

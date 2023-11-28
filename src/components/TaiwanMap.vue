@@ -40,7 +40,7 @@ import { ref, reactive, onMounted, computed } from 'vue'
 export default {
   name: 'TaiwanMap',
   props: {
-    cityTicketsMap: Array
+    cityTicketsMap: Object
   },
   setup () {
     const filter = ref('')
