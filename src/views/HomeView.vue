@@ -86,6 +86,9 @@ export default {
       selectedCityId.value = ''
       selectedAreaId.value = ''
       selectedDeptId.value = ''
+      // cityTickets.value.value = []
+      // nationTickets.value = []
+      // deptTickets.value = []
     }
 
     const getData = () => {
@@ -124,6 +127,7 @@ export default {
     const getData3 = () => {
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
+        console.log(response.data)
         cityTickets.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
