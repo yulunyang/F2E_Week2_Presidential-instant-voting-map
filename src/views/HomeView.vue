@@ -49,9 +49,9 @@ export default {
     const areaTickets = reactive({})
     const deptTickets = reactive({})
     const selectedThemeId = ref(area_themes[0].theme_items[0].theme_id)
-    const selectedCityId = ref(null)
-    const selectedAreaId = ref(null)
-    const selectedDeptId = ref(null)
+    const selectedCityId = ref('')
+    const selectedAreaId = ref('')
+    const selectedDeptId = ref('')
 
     const isPresent = ref(true)
 
@@ -63,9 +63,15 @@ export default {
     })
 
     const emitData = (val) => {
-      selectedCityId.value = getLocationCode(val.city)
-      selectedAreaId.value = getLocationCode(val.district)
-      selectedDeptId.value = getLocationCode(val.dept)
+      if (val.city) {
+        selectedCityId.value = getLocationCode(val.city)
+      }
+      if (val.district) {
+        selectedAreaId.value = getLocationCode(val.district)
+      }
+      if (val.dept) {
+        selectedDeptId.value = getLocationCode(val.dept)
+      }
       getData()
       getData2()
       getData3()
@@ -207,6 +213,7 @@ export default {
 
       selectedThemeId,
       selectedCityId,
+      selectedAreaId,
       selectedDeptId,
 
       getLocationCode,
