@@ -46,7 +46,10 @@ export default({
   props: {
     cities: Object,
     areas: Object,
-    depts: Object
+    depts: Object,
+    selectedCityId: String,
+    selectedAreaId: String,
+    selectedDeptId: String
   },
   setup (props, ctx) {
     onMounted(() => {

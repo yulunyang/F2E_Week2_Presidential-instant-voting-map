@@ -5,7 +5,7 @@
       <!-- <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a> -->
     </div>
     <!-- search-bar -->
-    <SearchBar v-on:emitData="emitData" v-on:resetEmit="resetEmit" :cities="cities" :areas="areas" :depts="depts" />
+    <SearchBar v-on:emitData="emitData" v-on:resetEmit="resetEmit" :cities="cities" :areas="areas" :depts="depts" :selectedCityId="selectedCityId" :selectedAreaId="selectedAreaId" :selectedDeptId="selectedDeptId" />
     <!-- content -->
     <div class="flex flex-wrap mt-4 md:mt-6 w-full">
       <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
@@ -58,8 +58,8 @@ export default {
     onMounted(() => {
       getData()
       getData2()
-      getData3()
-      getData4()
+      // getData3()
+      // getData4()
     })
 
     const emitData = (val) => {
@@ -118,8 +118,10 @@ export default {
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
-      });
+      })
+    }
 
+    const getData3 = () => {
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
         cityTickets.value = response.data['00_000_00_000_0000']
@@ -127,9 +129,6 @@ export default {
         console.log(err)
         resetSelectedIds()
       })
-    }
-
-    const getData3 = () => {
       // 區、鄉、鎮
       if (!selectedThemeId.value || !selectedCityId.value) return
 
@@ -150,7 +149,6 @@ export default {
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
         areaTickets.value = response.data[selectedCityId.value]
-        console.log(response.data[selectedCityId.value])
       }).catch(err => {
         console.log(err)
         // resetSelectedIds()

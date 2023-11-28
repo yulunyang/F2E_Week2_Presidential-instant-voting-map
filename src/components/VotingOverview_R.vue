@@ -1,7 +1,7 @@
 <template>
-  <TipCard v-if="!cityTickets && !nationTickets" />
+  <TipCard v-if="!cityTickets.value" />
 
-  <swiper  v-else
+  <swiper v-else
     :direction="'horizontal'"
     :slidesPerView="1.4"
     :spaceBetween="20"
