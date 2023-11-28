@@ -5,17 +5,17 @@
       <!-- <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a> -->
     </div>
     <!-- search-bar -->
-    <SearchBar v-on:emitData="emitData" v-on:resetEmit="resetEmit" :setCities="setCities" :setAreas="setAreas" :setDepts="setDepts" />
+    <SearchBar v-on:emitData="emitData" v-on:resetEmit="resetEmit" :cities="cities" :areas="areas" :depts="depts" />
     <!-- content -->
     <div class="flex flex-wrap mt-4 md:mt-6 w-full">
       <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
-        <VotingOverview_L :setElectionOverview="setElectionOverview" :setNationTickets="setNationTickets" :setCityTickets="setCityTickets" />
+        <VotingOverview_L :electionOverview="electionOverview" :nationTickets="nationTickets" :cityTickets="cityTickets" />
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center px-4 lg:px-20 xl:px-36">
         <TaiwanMap />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
-        <VotingOverview_R :setElectionOverview="setElectionOverview.value"  :setCityTickets="setCityTickets.value" :setNationTickets="setNationTickets.value" />
+        <VotingOverview_R :cityTickets="cityTickets" :areaTickets="areaTickets" :deptTickets="deptTickets"/>
       </div>
     </div>
   </div>
@@ -39,13 +39,15 @@ export default {
   setup () {
     const baseURL = ref('https://db.cec.gov.tw/static/elections/data')
     const area_themes = reactive(area_themesJson)
-    const setCities = reactive({})
-    const setAreas = reactive({})
-    const setDepts = reactive({})
-    const setSelectedCityId = reactive({})
-    const setElectionOverview = reactive({})
-    const setCityTickets = reactive({})
-    const setNationTickets = reactive({})
+    const cities = reactive({})
+    const areas = reactive({})
+    const depts = reactive({})
+
+    const electionOverview = reactive({})
+    const cityTickets = reactive({})
+    const nationTickets = reactive({})
+    const areaTickets = reactive({})
+    const deptTickets = reactive({})
     const selectedThemeId = ref(area_themes[0].theme_items[0].theme_id)
     const selectedCityId = ref(null)
     const selectedAreaId = ref(null)
@@ -56,13 +58,16 @@ export default {
     onMounted(() => {
       getData()
       getData2()
+      getData3()
+      getData4()
     })
 
     const emitData = (val) => {
-      console.log(val)
       selectedCityId.value = getLocationCode(val.city)
       selectedAreaId.value = getLocationCode(val.district)
       selectedDeptId.value = getLocationCode(val.dept)
+      getData()
+      getData2()
       getData3()
       getData4()
     }
@@ -81,7 +86,7 @@ export default {
       // 縣市行政區
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
-        setCities.value = response.data['00_000_00_000_0000']
+        cities.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -90,7 +95,7 @@ export default {
       // 選舉概況表
       axios.get(`${baseURL.value}/profiles/ELC/P0/00/${selectedThemeId.value}/N/00_000_00_000_0000.json`)
       .then(response =>{
-        setElectionOverview.value = response.data['00_000_00_000_0000'][0]
+        electionOverview.value = response.data['00_000_00_000_0000'][0]
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -103,7 +108,7 @@ export default {
 
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/N/00_000_00_000_0000.json`)
       .then(response =>{
-        setNationTickets.value = response.data['00_000_00_000_0000']
+        nationTickets.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -111,7 +116,7 @@ export default {
 
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
-        setCityTickets.value = response.data['00_000_00_000_0000']
+        cityTickets.value = response.data['00_000_00_000_0000']
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -124,13 +129,12 @@ export default {
 
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
-        // console.log(response.data)
-        setAreas.value = response.data[selectedCityId.value]
-        // const updatedAreas = response.data[selectedCityId.value]
-        // const defaultArea = updatedAreas?.[0]
-        // console.log(defaultArea)
-        // setAreas(updatedAreas)
-        // setSelectedAreaId(getLocationCode(defaultArea))
+        let updatedAreas = response.data[selectedCityId.value]
+        let defaultArea = updatedAreas?.[0]
+
+        selectedAreaId.value = getLocationCode(defaultArea)
+
+        areas.value = updatedAreas
       }).catch(err => {
         console.log(err)
         // resetSelectedIds()
@@ -139,7 +143,8 @@ export default {
       // 選舉概況表
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
-        console.log(response.data)
+        areaTickets.value = response.data[selectedCityId.value]
+        console.log(response.data[selectedCityId.value])
       }).catch(err => {
         console.log(err)
         // resetSelectedIds()
@@ -151,8 +156,13 @@ export default {
       // 里、村
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
       .then(response =>{
-        console.log(response.data)
-        setDepts.value = response.data[selectedAreaId.value]
+
+      let updatedDept = response.data[selectedAreaId.value]
+      let defaultDept = updatedDept?.[0]
+
+      selectedDeptId.value = getLocationCode(defaultDept)
+
+      depts.value = updatedDept
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -160,8 +170,8 @@ export default {
 
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
       .then(response =>{
-        console.log(response.data)
-        // setDeptTickets(res.data[selectedAreaId])
+        deptTickets.value = response.data[selectedAreaId.value]
+        // console.log(response.data)
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -172,56 +182,37 @@ export default {
       return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
     }
 
-    const getCandidatePairs = (arr) => {
-      if (arr) {
-        let candidateNoList = [...new Set(arr.map((item) => item.cand_no))]
-        return candidateNoList.map((candidateNo) => {
-          const president = arr.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-          const vicePresident = arr.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-          return {
-            candidateNo,
-            areaId: getLocationCode(president) || '',
-            areaName: president?.area_name || '',
-            presidentName: president?.cand_name || '',
-            vicePresidentName: vicePresident?.cand_name || '',
-            partyName: president?.party_name || '',
-            partyCode: president?.party_code || 0,
-            ticketNum: president?.ticket_num || 0,
-            ticketPercent: president?.ticket_percent || 0,
-          }
-        })
-      }
-      return []
-
-    }
-    const nationCandidatePairs = setNationTickets ? getCandidatePairs(setNationTickets.value) : []
-    // const cityCandidatePairs = getCandidatePairs(setCityTickets.value?.filter((item) => getLocationCode(item) === selectedCityId.value))
-    // const areaCandidatePairs = getCandidatePairs(areaTickets.value?.filter((item) => getLocationCode(item) === selectedAreaId.value))
-    // const deptCandidatePairs = getCandidatePairs(deptTickets.value?.filter((item) => getLocationCode(item) === selectedDeptId.value))
     return {
       baseURL,
       area_themes,
-      selectedThemeId,
+
       isPresent,
       emitData,
       getData,
       getData2,
       getData3,
       getData4,
-      setCities,
-      setAreas,
-      setDepts,
-      setCityTickets,
-      setElectionOverview,
-      setNationTickets,
+      cities,
+      areas,
+      depts,
+
+      nationTickets,
+      cityTickets,
+      areaTickets,
+      deptTickets,
+
+      electionOverview,
+
       resetSelectedIds,
+
+      selectedThemeId,
       selectedCityId,
-      setSelectedCityId,
       selectedDeptId,
+
       getLocationCode,
-      resetEmit,
-      getCandidatePairs,
-      nationCandidatePairs,
+      resetEmit
+      // getCandidatePairs,
+      // nationCandidatePairs,
       // cityCandidatePairs,
       // areaCandidatePairs,
       // deptCandidatePairs,

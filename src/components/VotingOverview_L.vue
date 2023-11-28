@@ -9,24 +9,24 @@
     </div>
     <div class="mt-6 hidden lg:block">
       <div class="flex flex-wrap items-center mb-3">
-        <div class="w-2/5 lg:w-3/5" v-if="setElectionOverview.value">
-          <Voting_chart1 :invalid_ticket="setElectionOverview.value.invalid_ticket" :valid_ticket="setElectionOverview.value.valid_ticket" />
+        <div class="w-2/5 lg:w-3/5" v-if="electionOverview.value">
+          <Voting_chart1 :invalid_ticket="electionOverview.value.invalid_ticket" :valid_ticket="electionOverview.value.valid_ticket" />
         </div>
         <div class="flex-1 lg:w-2/5 lg:px-3">
-          <p class="text-xl font-semibold" v-if="setElectionOverview.value">{{ setElectionOverview.value.vote_to_elect }}%</p>
+          <p class="text-xl font-semibold" v-if="electionOverview.value">{{ electionOverview.value.vote_to_elect }}%</p>
           <p>投票率</p>
         </div>
-        <div class="w-2/5 lg:w-full lg:py-3" v-if="setElectionOverview.value">
-          <p>投票數 <span class="text-xs font-semibold ml-2">{{ setElectionOverview.value.vote_ticket }} 票</span></p>
-          <p>無效票數 <span class="text-xs font-semibold ml-2">{{ setElectionOverview.value.invalid_ticket }} 票</span></p>
-          <p>有效票數 <span class="text-xs font-semibold ml-2">{{ setElectionOverview.value.valid_ticket }} 票</span></p>
+        <div class="w-2/5 lg:w-full lg:py-3" v-if="electionOverview.value">
+          <p>投票數 <span class="text-xs font-semibold ml-2">{{ electionOverview.value.vote_ticket }} 票</span></p>
+          <p>無效票數 <span class="text-xs font-semibold ml-2">{{ electionOverview.value.invalid_ticket }} 票</span></p>
+          <p>有效票數 <span class="text-xs font-semibold ml-2">{{ electionOverview.value.valid_ticket }} 票</span></p>
         </div>
       </div>
       <div class="flex flex-wrap items-center">
         <div class="w-2/5 lg:w-3/5">
           <Voting_chart2 />
         </div>
-        <div class="w-3/5 lg:w-full lg:py-3" v-if="getCandidatePairs && getCandidatePairs.length > 0">
+        <div class="w-3/5 lg:w-full lg:py-3" v-if="nationTickets.value">
           <div class="flex items-start pt-3 pb-2" v-for="(item,index) in getCandidatePairs" :key="index">
             <div class="w-10">
               <p class="rounded-full w-7 h-7 flex items-center justify-center text-white m-0"
@@ -124,9 +124,9 @@ import Voting_chart1 from '@/components/modules/Voting_chart1.vue'
 import Voting_chart2 from '@/components/modules/Voting_chart2.vue'
 export default({
   props: {
-    setElectionOverview: Object,
-    setNationTickets: Object,
-    setCityTickets: Object
+    electionOverview: Object,
+    nationTickets: Object,
+    cityTickets: Object
   },
   components: {
     Voting_chart2,
@@ -135,11 +135,11 @@ export default({
 
   setup (props) {
     const isShow = ref(false)
-    const getCandidatePairs = computed(()=>{
-      let candidateNoList = [...new Set(props.setNationTickets.value.map((item) => item.cand_no))]
+    const getCandidatePairs = computed(() => {
+      let candidateNoList = [...new Set(props.nationTickets.value.map((item) => item.cand_no))]
         return candidateNoList.map((candidateNo) => {
-          const president = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-          const vicePresident = props.setNationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+          const president = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+          const vicePresident = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
           return {
             candidateNo,
             // areaId: getLocationCode(president) || '',

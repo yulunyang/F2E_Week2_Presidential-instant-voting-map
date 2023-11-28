@@ -3,9 +3,9 @@
     <div class="flex flex-wrap flex-1 md:flex-none pr-2 md:pr-0">
       <div class="relative w-full md:w-auto md:mr-2 mb-3 md:mb-0">
         <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
-          v-model="cityIndex" @change="emitData">
+          v-model="cityIndex" @change="emitData" :disabled="!cities.value">
           <option value="">請選擇</option>
-          <option v-for="(item,index) in setCities.value" :key="index" :value="index">{{ item.area_name }}</option>
+          <option v-for="(item,index) in cities.value" :key="index" :value="index">{{ item.area_name }}</option>
         </select>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -13,9 +13,9 @@
       </div>
       <div class="relative w-full md:w-auto md:mr-2">
         <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
-          v-model="districtsIndex" @change="emitData">
+          v-model="districtsIndex" @change="emitData" :disabled="!areas.value">
           <option value="">請選擇</option>
-          <option v-for="(item,index) in setAreas.value" :key="index" :value="index">{{ item.area_name }}</option>
+          <option v-for="(item,index) in areas.value" :key="index" :value="index">{{ item.area_name }}</option>
         </select>
         <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -23,9 +23,9 @@
       </div>
       <div class="relative w-1/2 md:w-auto md:mr-2">
         <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
-          v-model="deptsIndex" @change="emitData">
+          v-model="deptsIndex" @change="emitData" :disabled="!depts.value">
           <option :value="''">請選擇</option>
-          <option v-for="(item,index) in setDepts.value" :key="index" :value="index">{{ item.area_name }}</option>
+          <option v-for="(item,index) in depts.value" :key="index" :value="index">{{ item.area_name }}</option>
         </select>
         <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -44,9 +44,9 @@ import { ref, onMounted } from 'vue'
 // import zipCodeJson from './zipCode.json'
 export default({
   props: {
-    setCities: Object,
-    setAreas: Object,
-    setDepts: Object
+    cities: Object,
+    areas: Object,
+    depts: Object
   },
   setup (props, ctx) {
     onMounted(() => {
@@ -63,13 +63,13 @@ export default({
         dept: ''
       }
       if (cityIndex.value !== '') {
-        obj.city = props.setCities.value[cityIndex.value]
+        obj.city = props.cities.value[cityIndex.value]
       }
       if (districtsIndex.value !== '') {
-        obj.district = props.setAreas.value[districtsIndex.value]
+        obj.district = props.areas.value[districtsIndex.value]
       }
       if (deptsIndex.value !== '') {
-        obj.dept = props.setDepts.value[deptsIndex.value]
+        obj.dept = props.depts.value[deptsIndex.value]
       }
 
       ctx.emit('emitData', obj)
