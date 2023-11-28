@@ -5,7 +5,45 @@
       <!-- <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a> -->
     </div>
     <!-- search-bar -->
-    <SearchBar v-on:emitData="emitData" v-on:resetEmit="resetEmit" :cities="cities" :areas="areas" :depts="depts" :selectedCityId="selectedCityId" :selectedAreaId="selectedAreaId" :selectedDeptId="selectedDeptId" />
+    <div class="search-bar flex">
+      <div class="flex flex-wrap flex-1 md:flex-none pr-2 md:pr-0">
+        <div class="relative w-full md:w-auto md:mr-2 mb-3 md:mb-0">
+          <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
+            v-model="selectedCityId" @change="selectChange" :disabled="!cities.value">
+            <option value="">請選擇</option>
+            <option v-for="(item,index) in cities.value" :key="index" :value="getLocationCode(item)">{{ item.area_name }}</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <div class="relative w-full md:w-auto md:mr-2">
+          <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
+            v-model="selectedAreaId" @change="selectChange" :disabled="!areas.value">
+            <option value="">請選擇</option>
+            <option v-for="(item,index) in areas.value" :key="index" :value="getLocationCode(item)">{{ item.area_name }}</option>
+          </select>
+          <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <div class="relative w-1/2 md:w-auto md:mr-2">
+          <select class="block appearance-none w-full border border-gray-200 py-2 px-2 pr-12 rounded leading-tight focus:outline-none bg-white focus:border-gray-900" id="invoice"
+            v-model="selectedDeptId" @change="selectChange" :disabled="!depts.value">
+            <option :value="''">請選擇</option>
+            <option v-for="(item,index) in depts.value" :key="index" :value="getLocationCode(item)">{{ item.area_name }}</option>
+          </select>
+          <div class=" pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+      </div>
+      <button class="refresh-btn text-white flex items-center justify-center px-3 py-0 rounded-md font-medium" @click="resetEmit">
+        <span class="hidden md:block">清除</span>
+        <img src="@/assets/img/rotate-cw.png" alt="" class="md:ml-2">
+      </button>
+    </div>
+
     <!-- content -->
     <div class="flex flex-wrap mt-4 md:mt-6 w-full">
       <div class="w-full lg:w-3/12 xl:w-1/5 mb-4 md:mb-0">
@@ -27,7 +65,6 @@ import { ref, reactive, onMounted } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
 import TaiwanMap from '@/components/TaiwanMap.vue'
-import SearchBar from '@/components/modules/searchBar.vue'
 import axios from 'axios'
 import area_themesJson from '@/components/data/area_themes.json'
 import partyColorsJson from '@/components/data/party_colors.json'
@@ -35,7 +72,6 @@ export default {
   components: {
     VotingOverview_L,
     VotingOverview_R,
-    SearchBar,
     TaiwanMap,
   },
   setup () {
@@ -66,23 +102,6 @@ export default {
       // getData4()
     })
 
-    const emitData = (val) => {
-      console.log(val)
-      if (val.city) {
-        selectedCityId.value = getLocationCode(val.city)
-      }
-      if (val.district) {
-        selectedAreaId.value = getLocationCode(val.district)
-      }
-      if (val.dept) {
-        selectedDeptId.value = getLocationCode(val.dept)
-      }
-      getData()
-      getData2()
-      getData3()
-      getData4()
-    }
-
     const resetEmit = () => {
       resetSelectedIds()
     }
@@ -91,9 +110,13 @@ export default {
       selectedCityId.value = ''
       selectedAreaId.value = ''
       selectedDeptId.value = ''
-      // cityTickets.value.value = []
-      // nationTickets.value = []
-      // deptTickets.value = []
+
+      cityTickets.value = []
+      nationTickets.value = []
+      deptTickets.value = []
+      areaTickets.value = []
+
+      selectChange()
     }
 
     const getData = () => {
@@ -133,7 +156,6 @@ export default {
         cityTickets.value = response.data['00_000_00_000_0000']
 
         cityTicketsMap.value = getCityTicketsMap(cities.value, cityTickets.value)
-        console.log(response.data)
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -146,25 +168,22 @@ export default {
 
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
-        // console.log(response.data)
         let updatedAreas = response.data[selectedCityId.value]
         let defaultArea = updatedAreas?.[0]
 
         selectedAreaId.value = getLocationCode(defaultArea)
 
         areas.value = updatedAreas
-      }).catch(err => {
-        console.log(err)
-        // resetSelectedIds()
+      }).catch(() => {
+        resetSelectedIds()
       });
 
       // 選舉概況表
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
         areaTickets.value = response.data[selectedCityId.value]
-      }).catch(err => {
-        console.log(err)
-        // resetSelectedIds()
+      }).catch(() => {
+        resetSelectedIds()
       })
     }
 
@@ -217,13 +236,20 @@ export default {
       return cityTicketsMap
     }
 
+    const selectChange = () => {
+      getData()
+      getData2()
+      getData3()
+      getData4()
+    }
+
     return {
       baseURL,
       area_themes,
       party_colors,
 
       isPresent,
-      emitData,
+      // emitData,
       getData,
       getData2,
       getData3,
@@ -249,13 +275,8 @@ export default {
       getLocationCode,
       getCityTicketsMap,
       resetEmit,
-      cityTicketsMap
-      // getCandidatePairs,
-      // nationCandidatePairs,
-      // cityCandidatePairs,
-      // areaCandidatePairs,
-      // deptCandidatePairs,
-      // calculateNationTickets
+      cityTicketsMap,
+      selectChange
     }
   }
 }
