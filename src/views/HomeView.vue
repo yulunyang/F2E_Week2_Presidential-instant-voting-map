@@ -12,7 +12,7 @@
         <VotingOverview_L :electionOverview="electionOverview" :nationTickets="nationTickets" :cityTickets="cityTickets" />
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center px-4 lg:px-20 xl:px-36">
-        <TaiwanMap />
+        <TaiwanMap :cityTicketsMap="cityTicketsMap" />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
         <VotingOverview_R :cityTickets="cityTickets" :areaTickets="areaTickets" :deptTickets="deptTickets"/>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { orderBy } from 'lodash'
 import { ref, reactive, onMounted } from 'vue'
 import VotingOverview_L from '@/components/VotingOverview_L.vue'
 import VotingOverview_R from '@/components/VotingOverview_R.vue'
@@ -29,6 +30,7 @@ import TaiwanMap from '@/components/TaiwanMap.vue'
 import SearchBar from '@/components/modules/searchBar.vue'
 import axios from 'axios'
 import area_themesJson from '@/components/data/area_themes.json'
+import partyColorsJson from '@/components/data/party_colors.json'
 export default {
   components: {
     VotingOverview_L,
@@ -39,6 +41,7 @@ export default {
   setup () {
     const baseURL = ref('https://db.cec.gov.tw/static/elections/data')
     const area_themes = reactive(area_themesJson)
+    const party_colors = reactive(partyColorsJson)
     const cities = reactive({})
     const areas = reactive({})
     const depts = reactive({})
@@ -52,6 +55,7 @@ export default {
     const selectedCityId = ref('')
     const selectedAreaId = ref('')
     const selectedDeptId = ref('')
+    const cityTicketsMap = reactive({})
 
     const isPresent = ref(true)
 
@@ -63,6 +67,7 @@ export default {
     })
 
     const emitData = (val) => {
+      console.log(val)
       if (val.city) {
         selectedCityId.value = getLocationCode(val.city)
       }
@@ -122,22 +127,26 @@ export default {
         console.log(err)
         resetSelectedIds()
       })
-    }
 
-    const getData3 = () => {
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/C/00_000_00_000_0000.json`)
       .then(response =>{
-        console.log(response.data)
         cityTickets.value = response.data['00_000_00_000_0000']
+
+        cityTicketsMap.value = getCityTicketsMap(cities.value, cityTickets.value)
+        console.log(response.data)
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
       })
+    }
+
+    const getData3 = () => {
       // 區、鄉、鎮
       if (!selectedThemeId.value || !selectedCityId.value) return
 
       axios.get(`${baseURL.value}/areas/ELC/P0/00/${selectedThemeId.value}/D/${selectedCityId.value}.json`)
       .then(response =>{
+        // console.log(response.data)
         let updatedAreas = response.data[selectedCityId.value]
         let defaultArea = updatedAreas?.[0]
 
@@ -179,7 +188,6 @@ export default {
       axios.get(`${baseURL.value}/tickets/ELC/P0/00/${selectedThemeId.value}/L/${selectedCityId.value}.json`)
       .then(response =>{
         deptTickets.value = response.data[selectedAreaId.value]
-        // console.log(response.data)
       }).catch(err => {
         console.log(err)
         resetSelectedIds()
@@ -187,12 +195,32 @@ export default {
     }
 
     const getLocationCode = (item) => {
+      if (!item) {
+        return ''
+      }
       return `${item.prv_code}_${item.city_code}_${item.area_code}_${item.dept_code}_${item.li_code}`
+    }
+    const getCityTicketsMap = (cities, cityTickets) => {
+      const cityTicketsMap = cities.map((city) => {
+        const code = getLocationCode(city)
+        const name = city.area_name;
+        const tickets = cityTickets.filter((item) => item.area_name === name)
+        const winnerParty = orderBy(tickets, ['ticket_num'], ['desc'])[0]
+        const partyColor = party_colors.value?.find((item) => item.party_name === winnerParty?.party_name)?.color_code || 'b3b3b3'
+        return {
+          code,
+          name,
+          partyName: winnerParty?.party_name,
+          partyColor,
+        }
+      })
+      return cityTicketsMap
     }
 
     return {
       baseURL,
       area_themes,
+      party_colors,
 
       isPresent,
       emitData,
@@ -219,7 +247,9 @@ export default {
       selectedDeptId,
 
       getLocationCode,
-      resetEmit
+      getCityTicketsMap,
+      resetEmit,
+      cityTicketsMap
       // getCandidatePairs,
       // nationCandidatePairs,
       // cityCandidatePairs,

@@ -39,6 +39,9 @@ import * as $ from 'jquery'
 import { ref, reactive, onMounted, computed } from 'vue'
 export default {
   name: 'TaiwanMap',
+  props: {
+    cityTicketsMap: Array
+  },
   setup () {
     const filter = ref('')
     const place_data = reactive([
