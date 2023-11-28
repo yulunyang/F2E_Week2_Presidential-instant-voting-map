@@ -30,7 +30,7 @@
           <div class="flex items-start pt-3 pb-2" v-for="(item,index) in getCandidatePairs" :key="index">
             <div class="w-10">
               <p class="rounded-full w-7 h-7 flex items-center justify-center text-white m-0"
-              :class="{'bg-green-02': item.partyName === '民主進步黨', 'bg-purple-02': item.partyName === '中國國民黨', 'bg-orange-01': item.partyName === '親民黨'}">{{ item.cand_no }}</p>
+              :class="{'bg-green-02': item.partyName === '民主進步黨', 'bg-purple-02': item.partyName === '中國國民黨', 'bg-orange-01': item.partyName === '親民黨'}">{{ item.candidateNo }}</p>
             </div>
             <div class="flex-1 border-r-2"
             :class="{'border-green-02': item.partyName === '民主進步黨', 'border-purple-02': item.partyName === '中國國民黨', 'border-orange-01': item.partyName === '親民黨'}">
