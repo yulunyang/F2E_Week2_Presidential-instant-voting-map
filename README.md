@@ -19,10 +19,6 @@ https://yulunyang.github.io/F2E_Week2_Presidential-instant-voting-map/
 
 ### 第三方套件
 1. Tailwind
-1. D3.js
-1. animate.css
-1. AOS
-1. GSAP
 
 ### Project setup
 ```
