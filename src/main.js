@@ -6,13 +6,12 @@ import './index.css'
 import '@/assets/main.scss'
 import { gsap, ScrollTrigger, Draggable, MotionPathPlugin, TextPlugin } from "gsap/all";
 import $ from 'jquery'
-// import XLSX from 'xlsx'
-import Tooltip from "@programic/vue3-tooltip";
-// Import the CSS or use your own!
-import '@programic/vue3-tooltip/dist/index.css';
+
+import Tooltip from "@programic/vue3-tooltip"
+import '@programic/vue3-tooltip/dist/index.css'
 
 const options = {
-  position: 'top-right'
+  position: 'right-center'
 }
 
 

@@ -1,9 +1,9 @@
 <template>
   <div id="map" class="w-full">
     <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 700" width="510" height="700">
-      <path id="龜山島" v-tooltip="'guishan_island'" class="s0" d="m510 81.1c0 5.1-4.1 9.2-9 9.2h-11.3c-4.9 0-9-4.1-9-9.2 0-5 4.1-9.1 9-9.1h11.3c4.9 0 9 4.1 9 9.1z"/>
-      <path id="綠島" v-tooltip="'guishan_island'" class="s1" d="m420.9 522.9c0 4.3-2.8 7.8-6.3 7.8h-3.2c-3.5 0-6.3-3.5-6.3-7.8v-13.6c0-4.3 2.8-7.8 6.3-7.8h3.2c3.5 0 6.3 3.5 6.3 7.8z"/>
-      <path id="蘭嶼" v-tooltip="'guishan_island'" class="s1" d="m371.1 622.8c-1.2 2.4-4.2 3.5-6.7 2.4l-14.9-6.7c-2.6-1.1-3.7-4-2.6-6.4l4.3-8.9c1.2-2.5 4.2-3.6 6.7-2.5l14.9 6.7c2.5 1.1 3.7 4.1 2.5 6.5z"/>
+      <path id="龜山島" v-tooltip="'龜山島'" class="s0" d="m510 81.1c0 5.1-4.1 9.2-9 9.2h-11.3c-4.9 0-9-4.1-9-9.2 0-5 4.1-9.1 9-9.1h11.3c4.9 0 9 4.1 9 9.1z"/>
+      <path id="綠島" v-tooltip="'綠島'" class="s1" d="m420.9 522.9c0 4.3-2.8 7.8-6.3 7.8h-3.2c-3.5 0-6.3-3.5-6.3-7.8v-13.6c0-4.3 2.8-7.8 6.3-7.8h3.2c3.5 0 6.3 3.5 6.3 7.8z"/>
+      <path id="蘭嶼" v-tooltip="'蘭嶼'" class="s1" d="m371.1 622.8c-1.2 2.4-4.2 3.5-6.7 2.4l-14.9-6.7c-2.6-1.1-3.7-4-2.6-6.4l4.3-8.9c1.2-2.5 4.2-3.6 6.7-2.5l14.9 6.7c2.5 1.1 3.7 4.1 2.5 6.5z"/>
       <path id="宜蘭縣" v-tooltip="'guishan_island'" class="s0" d="m374.7 189c-3.1 0-7.8-1.2-10.3-2.7l-3.4-2c-2.6-1.6-4.7-5.2-4.7-8.3v-22.9c0-3.1 2-7.1 4.3-8.9l26.1-21c2.3-1.8 6.2-4.9 8.5-6.9l45-36c2.3-1.9 4.3-1 4.4 2.1l0.7 54.4c0 3-0.6 7.9-1.5 10.8l-11 36.2c-0.9 2.9-4.1 5.3-7.2 5.3h-50.9z"/>
       <path id="花蓮縣" v-tooltip="'guishan_island'" class="s1" d="m297.5 417.9c-2.6-1.6-4.7-5.5-4.7-8.4v-24.2c0-3 2-7 4.4-8.9l21.9-17.1c2.4-1.8 5.1-5.7 5.9-8.7l44.2-148.9c0.9-2.8 4.1-5.3 7.1-5.3h47.8c3.1 0 4.8 2.5 3.9 5.3l-75.6 245.4c-0.9 2.9-3.7 4-6.3 2.3z"/>
       <path id="台東縣" v-tooltip="'guishan_island'" class="s1" d="m250.3 518.8c0-3.1 1-7.8 2.3-10.6l36.8-82c1.2-2.8 4.3-3.6 6.8-2l47.8 31c2.6 1.7 3.3 5.1 1.6 7.6l-92.4 138.3c-1.6 2.5-3.1 2.1-3.1-0.9v-81.4z"/>
@@ -72,11 +72,24 @@ export default {
   svg {
     width: 100%;
     height: auto;
+    position: relative;
   }
   path {
+    position: relative;
     cursor: pointer;
     &:hover {
       opacity: 0.8;
+    }
+    &::before {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      display: block;
+      content: ' ';
+      background-size: 28px 28px;
+      background-color: #84cb98;
+      height: 30px;
+      width: 30px;
     }
   }
 </style>
