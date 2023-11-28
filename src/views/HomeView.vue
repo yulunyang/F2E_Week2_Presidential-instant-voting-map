@@ -171,7 +171,11 @@ export default {
         let updatedAreas = response.data[selectedCityId.value]
         let defaultArea = updatedAreas?.[0]
 
-        if (!selectedAreaId.value) {
+        let areaAr = []
+        for (let item of updatedAreas) {
+          areaAr.push(getLocationCode(item))
+        }
+        if (!selectedAreaId.value || areaAr.indexOf(selectedAreaId.value) < 0) {
           selectedAreaId.value = getLocationCode(defaultArea)
         }
 
@@ -197,8 +201,11 @@ export default {
 
       let updatedDept = response.data[selectedAreaId.value]
       let defaultDept = updatedDept?.[0]
-
-      if (!selectedDeptId.value) {
+      let deptAr = []
+        for (let item of updatedDept) {
+          deptAr.push(getLocationCode(item))
+        }
+      if (!selectedDeptId.value || deptAr.indexOf(selectedDeptId.value) < 0) {
         selectedDeptId.value = getLocationCode(defaultDept)
       }
 
