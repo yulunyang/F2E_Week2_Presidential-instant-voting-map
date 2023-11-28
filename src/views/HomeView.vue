@@ -50,7 +50,7 @@
         <VotingOverview_L :electionOverview="electionOverview" :nationTickets="nationTickets" :cityTickets="cityTickets" />
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/5 flex justify-center px-4 lg:px-20 xl:px-36">
-        <TaiwanMap :cityTicketsMap="cityTicketsMap" />
+        <TaiwanMap :cities="cities" :cityTicketsMap="cityTicketsMap" v-on:emitData="emitData" />
       </div>
       <div class="w-full lg:w-3/12 xl:w-1/5">
         <VotingOverview_R :cityTickets="cityTickets" :areaTickets="areaTickets" :deptTickets="deptTickets" :selectedCityId="selectedCityId" :selectedAreaId="selectedAreaId" :selectedDeptId="selectedDeptId" />
@@ -247,6 +247,12 @@ export default {
       return cityTicketsMap
     }
 
+    const emitData = (emitData) => {
+      // console.log(emitData)
+      selectedCityId.value = getLocationCode(emitData)
+      selectChange()
+    }
+
     const selectChange = () => {
       getData()
       getData2()
@@ -260,7 +266,7 @@ export default {
       party_colors,
 
       isPresent,
-      // emitData,
+      emitData,
       getData,
       getData2,
       getData3,
