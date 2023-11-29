@@ -9,6 +9,9 @@ import { ref, onMounted } from 'vue'
 import usePie from './usePie.js'
 export default {
   name: 'Chart_2',
+  props: {
+    getCandidatePairs: Array
+  },
   setup () {
     const chart2 = ref(null)
 

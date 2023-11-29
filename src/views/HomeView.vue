@@ -1,5 +1,5 @@
 <template>
-  <div class="main container mx-auto py-3 md:py-6 px-2">
+  <div class="main container mx-auto py-3 md:py-6 px-2 max-w-8xl" id="HomeView">
     <div class="side-bar flex mb-5 px-4 md:px-0">
       <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': isPresent, 'text-gray-01': !isPresent }" @click="isPresent = true">第15任 總統副總統大選</a>
       <!-- <a class="inline-block p-2 md:text-xl cursor-pointer w-1/2 md:w-auto text-center" :class="{ 'active-bar': !isPresent, 'text-gray-01': isPresent }" @click="isPresent = false">第10任 立法委員選舉</a> -->
@@ -69,6 +69,7 @@ import axios from 'axios'
 import area_themesJson from '@/components/data/area_themes.json'
 import partyColorsJson from '@/components/data/party_colors.json'
 export default {
+  name: 'HomeView',
   components: {
     VotingOverview_L,
     VotingOverview_R,
@@ -300,6 +301,9 @@ export default {
 </script>
 
 <style lang="scss">
+  #HomeView {
+    max-width: 1440px;
+  }
   .main {
     min-height: calc(100vh - 68px);
     margin-top: 68px;

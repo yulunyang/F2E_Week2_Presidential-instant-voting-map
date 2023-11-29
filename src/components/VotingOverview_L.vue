@@ -24,7 +24,7 @@
       </div>
       <div class="flex flex-wrap items-center">
         <div class="w-2/5 lg:w-3/5">
-          <Voting_chart2 />
+          <Voting_chart2 :getCandidatePairs="getCandidatePairs" />
         </div>
         <div class="w-3/5 lg:w-full lg:py-3" v-if="nationTickets.value">
           <div class="flex items-start pt-3 pb-2" v-for="(item,index) in getCandidatePairs" :key="index">
@@ -136,23 +136,26 @@ export default({
   setup (props) {
     const isShow = ref(false)
     const getCandidatePairs = computed(() => {
-      let candidateNoList = [...new Set(props.nationTickets.value.map((item) => item.cand_no))]
-        return candidateNoList.map((candidateNo) => {
-          const president = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
-          const vicePresident = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
-          return {
-            candidateNo,
-            // areaId: getLocationCode(president) || '',
-            areaName: president?.area_name || '',
-            presidentName: president?.cand_name || '',
-            vicePresidentName: vicePresident?.cand_name || '',
-            partyName: president?.party_name || '',
-            partyCode: president?.party_code || 0,
-            ticketNum: president?.ticket_num || 0,
-            ticketPercent: president?.ticket_percent || 0,
-          }
-        })
-      })
+      if (props.nationTickets.value) {
+          let candidateNoList = [...new Set(props.nationTickets.value.map((item) => item.cand_no))]
+          return candidateNoList.map((candidateNo) => {
+            const president = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice !== 'Y')
+            const vicePresident = props.nationTickets.value.find((item) => item.cand_no === candidateNo && item.is_vice === 'Y')
+            return {
+              candidateNo,
+              // areaId: getLocationCode(president) || '',
+              areaName: president?.area_name || '',
+              presidentName: president?.cand_name || '',
+              vicePresidentName: vicePresident?.cand_name || '',
+              partyName: president?.party_name || '',
+              partyCode: president?.party_code || 0,
+              ticketNum: president?.ticket_num || 0,
+              ticketPercent: president?.ticket_percent || 0,
+            }
+          })
+        }
+        return []
+    })
     onMounted(() => {
     })
 
@@ -160,7 +163,7 @@ export default({
       isShow,
       getCandidatePairs
     }
-  },
+  }
 })
 </script>
 
